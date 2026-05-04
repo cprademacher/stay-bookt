@@ -3,94 +3,1723 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stay Bookt</title>
+    <title>Stay Bookt — Never Miss Another Booking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --ink: #0c0c0c;
+        --ink-mid: #2a2a2a;
+        --ink-soft: #6b6b6b;
+        --gold: #c9a96e;
+        --gold-light: #e0c898;
+        --gold-dark: #a07840;
+        --cream: #faf8f3;
+        --cream-mid: #f0ebe0;
+        --cream-dark: #e4ddd0;
+        --white: #ffffff;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
+        font-family: "DM Sans", sans-serif;
+        background: var(--cream);
+        color: var(--ink);
+        overflow-x: hidden;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        height: 68px;
+        padding: 0 6%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition:
+          background 0.4s,
+          border-color 0.4s;
+      }
+
+      nav.scrolled {
+        background: rgba(12, 12, 12, 0.97);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+
+      .nav-logo-icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      .nav-logo-text {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--cream);
+        letter-spacing: 0.04em;
+      }
+
+      .nav-logo-text em {
+        font-style: italic;
+        color: var(--gold);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 32px;
+        list-style: none;
+        align-items: center;
+      }
+
+      .nav-links a {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(250, 248, 243, 0.65);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .nav-links a:hover {
+        color: var(--gold);
+      }
+
+      .nav-cta {
+        background: var(--gold) !important;
+        color: var(--ink) !important;
+        padding: 9px 22px !important;
+        letter-spacing: 0.08em !important;
+        font-weight: 600 !important;
+        transition: background 0.2s !important;
+      }
+
+      .nav-cta:hover {
+        background: var(--gold-light) !important;
+      }
+
+      .nav-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+      }
+
+      .nav-toggle span {
+        display: block;
+        width: 22px;
+        height: 1px;
+        background: var(--cream);
+        transition: 0.3s;
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 100vh;
+        background: var(--ink);
+        display: flex;
+        align-items: center;
+        padding: 100px 6% 80px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-bg-lines {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(201, 169, 110, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(201, 169, 110, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+      }
+
+      .hero-glow {
+        position: absolute;
+        top: -200px;
+        right: -200px;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(
+          circle,
+          rgba(201, 169, 110, 0.06) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+
+      .hero-glow-2 {
+        position: absolute;
+        bottom: -300px;
+        left: -100px;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(201, 169, 110, 0.04) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+
+      .hero-inner {
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 40px 20px;
-        color: #333;
-        line-height: 1.6;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+        position: relative;
+        z-index: 1;
       }
-      h1 {
-        color: #1a1a1a;
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 28px;
       }
-      h2 {
-        margin-top: 40px;
-        border-top: 1px solid #eee;
+
+      .hero-eyebrow-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+        animation: blink 2s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .hero h1 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(44px, 5.5vw, 76px);
+        font-weight: 300;
+        line-height: 1.05;
+        color: var(--cream);
+        letter-spacing: 0.01em;
+        margin-bottom: 24px;
+      }
+
+      .hero h1 em {
+        font-style: italic;
+        color: var(--gold-light);
+      }
+
+      .hero-sub {
+        font-size: 16px;
+        font-weight: 300;
+        color: rgba(250, 248, 243, 0.55);
+        line-height: 1.8;
+        margin-bottom: 44px;
+        max-width: 440px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 56px;
+      }
+
+      .btn-gold {
+        background: var(--gold);
+        color: var(--ink);
+        padding: 14px 32px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: inline-block;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+      }
+
+      .btn-gold:hover {
+        background: var(--gold-light);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: rgba(250, 248, 243, 0.7);
+        padding: 14px 32px;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: 1px solid rgba(250, 248, 243, 0.2);
+        display: inline-block;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+
+      .btn-outline:hover {
+        border-color: rgba(250, 248, 243, 0.5);
+        color: var(--cream);
+      }
+
+      .hero-proof {
+        display: flex;
+        gap: 32px;
+        padding-top: 32px;
+        border-top: 1px solid rgba(250, 248, 243, 0.08);
+      }
+
+      .proof-item {
+      }
+
+      .proof-num {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 36px;
+        font-weight: 300;
+        color: var(--gold);
+        line-height: 1;
+        display: block;
+      }
+
+      .proof-label {
+        font-size: 11px;
+        color: rgba(250, 248, 243, 0.35);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-top: 4px;
+        display: block;
+      }
+
+      /* HERO RIGHT — DEMO PREVIEW */
+      .hero-right {
+        position: relative;
+      }
+
+      .demo-card {
+        background: rgba(250, 248, 243, 0.04);
+        border: 1px solid rgba(201, 169, 110, 0.2);
+        padding: 32px;
+        position: relative;
+      }
+
+      .demo-card::before {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: 32px;
+        width: 60px;
+        height: 2px;
+        background: var(--gold);
+      }
+
+      .demo-label {
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 20px;
+      }
+
+      .demo-chat {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .chat-bubble {
+        max-width: 85%;
+        padding: 12px 16px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .chat-bubble.user {
+        background: rgba(250, 248, 243, 0.08);
+        color: rgba(250, 248, 243, 0.7);
+        align-self: flex-end;
+        border-radius: 12px 12px 2px 12px;
+      }
+
+      .chat-bubble.agent {
+        background: rgba(201, 169, 110, 0.12);
+        color: rgba(250, 248, 243, 0.85);
+        border: 1px solid rgba(201, 169, 110, 0.2);
+        align-self: flex-start;
+        border-radius: 2px 12px 12px 12px;
+      }
+
+      .chat-meta {
+        font-size: 10px;
+        color: rgba(250, 248, 243, 0.25);
+        margin-top: 4px;
+        letter-spacing: 0.06em;
+      }
+
+      .chat-bubble.agent .chat-meta {
+        text-align: left;
+      }
+      .chat-bubble.user .chat-meta {
+        text-align: right;
+      }
+
+      .demo-result {
+        margin-top: 20px;
         padding-top: 20px;
+        border-top: 1px solid rgba(250, 248, 243, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
-      .tagline {
-        font-size: 18px;
-        color: #555;
-        margin: 0 0 40px;
+
+      .result-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(201, 169, 110, 0.15);
+        border: 1px solid rgba(201, 169, 110, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
       }
-      .opt-in {
-        background: #f9f9f9;
-        border-left: 4px solid #1a1a1a;
-        padding: 16px 20px;
-        margin: 20px 0;
-        border-radius: 0 8px 8px 0;
+
+      .result-text {
+        font-size: 13px;
+        color: rgba(250, 248, 243, 0.6);
+      }
+
+      .result-text strong {
+        color: var(--gold-light);
+        font-weight: 500;
+      }
+
+      /* GOLD BAR */
+      .gold-bar {
+        height: 2px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--gold),
+          var(--gold-light),
+          transparent
+        );
+      }
+
+      /* SECTIONS */
+      .section {
+        padding: 100px 6%;
+      }
+      .section-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--gold-dark);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 24px;
+        height: 1px;
+        background: var(--gold-dark);
+      }
+
+      .section-title {
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(36px, 4vw, 54px);
+        font-weight: 300;
+        color: var(--ink);
+        line-height: 1.1;
+        margin-bottom: 16px;
+        letter-spacing: 0.01em;
+      }
+
+      .section-title em {
+        font-style: italic;
+        color: var(--gold-dark);
+      }
+
+      .section-sub {
+        font-size: 15px;
+        font-weight: 300;
+        color: var(--ink-soft);
+        line-height: 1.8;
+        max-width: 520px;
+        margin-bottom: 56px;
+      }
+
+      /* HOW IT WORKS */
+      .how-section {
+        background: var(--cream);
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+      }
+
+      .step-card {
+        background: var(--white);
+        padding: 36px 28px;
+        position: relative;
+      }
+
+      .step-num {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 64px;
+        font-weight: 300;
+        color: rgba(201, 169, 110, 0.12);
+        line-height: 1;
+        margin-bottom: 16px;
+      }
+
+      .step-card h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--ink);
+        margin-bottom: 10px;
+      }
+
+      .step-card p {
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--ink-soft);
+        line-height: 1.7;
+      }
+
+      .step-connector {
+        position: absolute;
+        top: 36px;
+        right: -12px;
+        width: 24px;
+        height: 1px;
+        background: var(--gold);
+        z-index: 1;
+      }
+
+      .step-card:last-child .step-connector {
+        display: none;
+      }
+
+      /* RESULTS */
+      .results-section {
+        background: var(--ink);
+        padding: 100px 6%;
+      }
+
+      .results-section .section-title {
+        color: var(--cream);
+      }
+      .results-section .section-sub {
+        color: rgba(250, 248, 243, 0.45);
+      }
+      .results-section .eyebrow {
+        color: var(--gold);
+      }
+      .results-section .eyebrow::before {
+        background: var(--gold);
+      }
+
+      .results-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+      }
+
+      .result-card {
+        background: rgba(250, 248, 243, 0.03);
+        border: 1px solid rgba(201, 169, 110, 0.1);
+        padding: 36px 32px;
+        transition:
+          border-color 0.3s,
+          background 0.3s;
+      }
+
+      .result-card:hover {
+        border-color: rgba(201, 169, 110, 0.3);
+        background: rgba(201, 169, 110, 0.05);
+      }
+
+      .result-metric {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 52px;
+        font-weight: 300;
+        color: var(--gold);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+
+      .result-card h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--cream);
+        margin-bottom: 10px;
+      }
+
+      .result-card p {
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(250, 248, 243, 0.45);
+        line-height: 1.7;
+      }
+
+      /* WHO WE SERVE */
+      .niches-section {
+        background: var(--cream-mid);
+      }
+
+      .niches-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .niche-card {
+        background: var(--white);
+        padding: 32px 28px;
+        border-bottom: 2px solid transparent;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+        cursor: default;
+      }
+
+      .niche-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-3px);
+      }
+
+      .niche-icon {
+        font-size: 28px;
+        margin-bottom: 16px;
+        display: block;
+      }
+
+      .niche-card h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--ink);
+        margin-bottom: 8px;
+      }
+
+      .niche-card p {
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--ink-soft);
+        line-height: 1.7;
+      }
+
+      .niche-pain {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--gold-dark);
+        font-weight: 500;
+      }
+
+      /* PRICING PREVIEW */
+      .pricing-section {
+        background: var(--cream);
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .price-card {
+        background: var(--white);
+        padding: 36px 28px;
+        border: 1px solid var(--cream-dark);
+        position: relative;
+        transition: border-color 0.2s;
+      }
+
+      .price-card:hover {
+        border-color: var(--gold);
+      }
+
+      .price-card.featured {
+        background: var(--ink);
+        border-color: var(--gold);
+      }
+
+      .price-card.featured::before {
+        content: "Most Popular";
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--gold);
+        color: var(--ink);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 14px;
+        white-space: nowrap;
+      }
+
+      .price-name {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 22px;
+        font-weight: 400;
+        color: var(--ink);
+        margin-bottom: 4px;
+      }
+
+      .price-card.featured .price-name {
+        color: var(--cream);
+      }
+
+      .price-target {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-bottom: 20px;
+        min-height: 36px;
+      }
+
+      .price-card.featured .price-target {
+        color: rgba(250, 248, 243, 0.45);
+      }
+
+      .price-amount {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 48px;
+        font-weight: 300;
+        color: var(--ink);
+        line-height: 1;
+      }
+
+      .price-amount sup {
+        font-size: 22px;
+        vertical-align: super;
+      }
+
+      .price-card.featured .price-amount {
+        color: var(--gold);
+      }
+
+      .price-period {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-bottom: 24px;
+      }
+
+      .price-card.featured .price-period {
+        color: rgba(250, 248, 243, 0.35);
+      }
+
+      .price-divider {
+        height: 1px;
+        background: var(--cream-dark);
+        margin-bottom: 20px;
+      }
+
+      .price-card.featured .price-divider {
+        background: rgba(250, 248, 243, 0.1);
+      }
+
+      .price-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .price-features li {
+        font-size: 13px;
+        color: var(--ink-mid);
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        line-height: 1.4;
+      }
+
+      .price-card.featured .price-features li {
+        color: rgba(250, 248, 243, 0.6);
+      }
+
+      .price-features li::before {
+        content: "✓";
+        color: var(--gold);
+        font-size: 11px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .pricing-note {
+        text-align: center;
+        font-size: 13px;
+        color: var(--ink-soft);
+      }
+
+      .pricing-note a {
+        color: var(--gold-dark);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      /* CONTACT SECTION */
+      .contact-section {
+        background: var(--ink);
+        padding: 100px 6%;
+      }
+
+      .contact-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+
+      .contact-left .section-title {
+        color: var(--cream);
+      }
+      .contact-left .section-sub {
+        color: rgba(250, 248, 243, 0.45);
+        margin-bottom: 40px;
+      }
+      .contact-left .eyebrow {
+        color: var(--gold);
+      }
+      .contact-left .eyebrow::before {
+        background: var(--gold);
+      }
+
+      .contact-features {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .contact-feature {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .contact-feature-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(201, 169, 110, 0.1);
+        border: 1px solid rgba(201, 169, 110, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .contact-feature-text h4 {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--cream);
+        margin-bottom: 3px;
+      }
+
+      .contact-feature-text p {
+        font-size: 13px;
+        color: rgba(250, 248, 243, 0.4);
+        line-height: 1.5;
+      }
+
+      /* BOOKING */
+      .booking-section {
+        background: var(--cream-mid);
+        padding: 100px 6%;
+      }
+
+      .booking-inner {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .booking-inner .section-title {
+        margin-bottom: 12px;
+      }
+      .booking-inner .section-sub {
+        margin: 0 auto 48px;
+      }
+
+      .booking-widget {
+        background: var(--white);
+        border: 1px solid var(--cream-dark);
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .booking-widget iframe {
+        width: 100%;
+        height: 700px;
+        border: none;
+        display: block;
+      }
+
+      /* FOOTER */
+      footer {
+        background: #080808;
+        padding: 56px 6% 32px;
+      }
+
+      .footer-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-top {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 48px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        margin-bottom: 28px;
+      }
+
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .footer-logo-text {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: var(--cream);
+        letter-spacing: 0.04em;
+      }
+
+      .footer-logo-text em {
+        font-style: italic;
+        color: var(--gold);
+      }
+
+      .footer-desc {
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(250, 248, 243, 0.3);
+        line-height: 1.8;
+        max-width: 280px;
+      }
+
+      .footer-col h4 {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 18px;
+      }
+
+      .footer-col ul {
+        list-style: none;
+      }
+      .footer-col li {
+        margin-bottom: 10px;
+      }
+      .footer-col a {
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(250, 248, 243, 0.35);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-col a:hover {
+        color: var(--gold-light);
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 12px;
+        color: rgba(250, 248, 243, 0.18);
+      }
+
+      .footer-legal {
+        display: flex;
+        gap: 20px;
+      }
+      .footer-legal a {
+        color: rgba(250, 248, 243, 0.18);
+        text-decoration: none;
+        font-size: 11px;
+      }
+      .footer-legal a:hover {
+        color: rgba(250, 248, 243, 0.45);
+      }
+
+      /* GHL FORM OVERRIDES */
+      .ghl-form-wrap {
+        background: rgba(250, 248, 243, 0.03);
+        border: 1px solid rgba(201, 169, 110, 0.15);
+        padding: 32px;
+      }
+
+      .ghl-form-wrap iframe {
+        width: 100% !important;
+        min-height: 600px;
+        border: none !important;
+      }
+
+      /* ANIMATIONS */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero-eyebrow {
+        animation: fadeUp 0.6s ease 0.1s both;
+      }
+      .hero h1 {
+        animation: fadeUp 0.6s ease 0.25s both;
+      }
+      .hero-sub {
+        animation: fadeUp 0.6s ease 0.4s both;
+      }
+      .hero-actions {
+        animation: fadeUp 0.6s ease 0.55s both;
+      }
+      .hero-proof {
+        animation: fadeUp 0.6s ease 0.7s both;
+      }
+      .demo-card {
+        animation: fadeUp 0.6s ease 0.5s both;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 900px) {
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
+        .hero-right {
+          display: none;
+        }
+        .steps-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .results-grid {
+          grid-template-columns: 1fr;
+        }
+        .niches-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+        .contact-inner {
+          grid-template-columns: 1fr;
+        }
+        .footer-top {
+          grid-template-columns: 1fr;
+        }
+        .nav-links {
+          display: none;
+        }
+        .nav-toggle {
+          display: flex;
+        }
+        .nav-links.open {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 68px;
+          left: 0;
+          right: 0;
+          background: rgba(12, 12, 12, 0.98);
+          padding: 20px 6% 28px;
+          gap: 20px;
+          border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .steps-grid {
+          grid-template-columns: 1fr;
+        }
+        .niches-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-proof {
+          flex-wrap: wrap;
+          gap: 20px;
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Stay Bookt</h1>
-    <p class="tagline">
-      AI-powered front desk and booking automation for small businesses.
-    </p>
+    <!-- NAV -->
+    <nav id="navbar">
+      <a href="#" class="nav-logo">
+        <svg
+          class="nav-logo-icon"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="2"
+            y="4"
+            width="28"
+            height="26"
+            rx="3"
+            stroke="#C9A96E"
+            stroke-width="1.5"
+          />
+          <line
+            x1="2"
+            y1="12"
+            x2="30"
+            y2="12"
+            stroke="#C9A96E"
+            stroke-width="1.5"
+          />
+          <rect x="7" y="17" width="5" height="5" rx="1" fill="#C9A96E" />
+          <rect x="14" y="17" width="5" height="5" rx="1" fill="#C9A96E" />
+          <rect
+            x="21"
+            y="17"
+            width="5"
+            height="5"
+            rx="1"
+            fill="#C9A96E"
+            opacity="0.4"
+          />
+          <rect
+            x="7"
+            y="24"
+            width="5"
+            height="3"
+            rx="1"
+            fill="#C9A96E"
+            opacity="0.4"
+          />
+          <line
+            x1="10"
+            y1="4"
+            x2="10"
+            y2="1"
+            stroke="#C9A96E"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+          <line
+            x1="22"
+            y1="4"
+            x2="22"
+            y2="1"
+            stroke="#C9A96E"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+        <span class="nav-logo-text">Stay <em>Bookt</em></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#who-we-serve">Who We Serve</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#book-demo" class="nav-cta">Book a Demo</a></li>
+      </ul>
+      <div class="nav-toggle" id="navToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
 
-    <p>
-      Stay Bookt provides done-for-you AI agent services that handle inbound
-      inquiries, qualify leads, book appointments, and follow up with customers
-      — automatically, 24/7. We serve small businesses across home services,
-      medical, wellness, and professional services.
-    </p>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg-lines"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-glow-2"></div>
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="hero-eyebrow-dot"></span>
+            Done-for-you booking automation
+          </div>
+          <h1>
+            Your Calendar,<br /><em>Always Full.</em><br />Your Desk, Always
+            Free.
+          </h1>
+          <p class="hero-sub">
+            Stay Bookt handles your inbound inquiries, qualifies leads, books
+            appointments, and follows up — so you never miss a booking again,
+            day or night.
+          </p>
+          <div class="hero-actions">
+            <a href="#book-demo" class="btn-gold">Book a Free Demo</a>
+            <a href="#how-it-works" class="btn-outline">See How It Works</a>
+          </div>
+          <div class="hero-proof">
+            <div class="proof-item">
+              <span class="proof-num">24/7</span>
+              <span class="proof-label">Always on</span>
+            </div>
+            <div class="proof-item">
+              <span class="proof-num">< 30s</span>
+              <span class="proof-label">Response time</span>
+            </div>
+            <div class="proof-item">
+              <span class="proof-num">85%+</span>
+              <span class="proof-label">Handled autonomously</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="demo-card">
+            <div class="demo-label">Live conversation — 11:43 PM</div>
+            <div class="demo-chat">
+              <div class="chat-bubble user">
+                Hi, I'm interested in booking a Botox consultation for next week
+                <div class="chat-meta">11:43 PM</div>
+              </div>
+              <div class="chat-bubble agent">
+                Of course! We'd love to get you in. We have availability Tuesday
+                and Thursday afternoon next week. May I get your name so I can
+                check the best fit for you?
+                <div class="chat-meta">Novara Concierge · 11:43 PM</div>
+              </div>
+              <div class="chat-bubble user">
+                Sarah, Thursday works perfectly
+                <div class="chat-meta">11:44 PM</div>
+              </div>
+              <div class="chat-bubble agent">
+                Perfect, Sarah! I've got you down for Thursday at 2:30 PM for a
+                complimentary consultation. You'll receive a confirmation
+                shortly — we look forward to meeting you.
+                <div class="chat-meta">Novara Concierge · 11:44 PM</div>
+              </div>
+            </div>
+            <div class="demo-result">
+              <div class="result-icon">✓</div>
+              <div class="result-text">
+                <strong>Appointment booked</strong> — Thursday 2:30 PM<br />
+                Owner notified · Lead added to CRM
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <p>Our clients never miss another lead.</p>
+    <div class="gold-bar"></div>
 
-    <p>Contact: <a href="mailto:info@staybookt.com">info@staybookt.com</a></p>
+    <!-- HOW IT WORKS -->
+    <section class="section how-section" id="how-it-works">
+      <div class="section-inner">
+        <div class="eyebrow">How it works</div>
+        <h2 class="section-title">Set Up Once.<br /><em>Run Forever.</em></h2>
+        <p class="section-sub">
+          We handle everything from setup to ongoing optimization. You're live
+          in under a week and your agent runs itself from day one.
+        </p>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <h3>We Learn Your Business</h3>
+            <p>
+              A 30-minute intake call. We collect everything — your services,
+              pricing, booking process, hours, and what makes a great client for
+              you.
+            </p>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <h3>We Build Your Agent</h3>
+            <p>
+              Your custom agent is trained on your business, branded to match
+              your identity, and connected to your existing calendar and
+              website.
+            </p>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <h3>You Go Live</h3>
+            <p>
+              One embed code on your website. Your agent starts handling
+              inquiries, qualifying leads, and booking appointments
+              automatically.
+            </p>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">04</div>
+            <h3>We Stay On Top of It</h3>
+            <p>
+              Weekly monitoring, performance reports, and ongoing optimization.
+              Your agent gets smarter over time — and you stay in the loop
+              without lifting a finger.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>SMS Communication</h2>
-    <div class="opt-in">
-      <p>
-        By providing your phone number or initiating contact with a Stay Bookt
-        client via SMS or web chat, you agree to receive SMS messages regarding
-        your service inquiry, appointment confirmations, and follow-up
-        communications on behalf of that business. Message and data rates may
-        apply. Reply STOP to unsubscribe at any time. Reply HELP for help.
-      </p>
-    </div>
+    <!-- RESULTS -->
+    <section class="results-section" id="results">
+      <div class="section-inner">
+        <div class="eyebrow">What clients see</div>
+        <h2 class="section-title">
+          Real <em>Outcomes.</em><br />Not Just Automation.
+        </h2>
+        <p class="section-sub">
+          We measure success the same way you do — in bookings, revenue, and
+          time saved.
+        </p>
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-metric">0</div>
+            <h3>Missed Inquiries</h3>
+            <p>
+              Every message gets an intelligent response within seconds — at
+              2am, on weekends, during your busiest hours. No lead falls through
+              the cracks.
+            </p>
+          </div>
+          <div class="result-card">
+            <div class="result-metric">3–5×</div>
+            <h3>Return on Investment</h3>
+            <p>
+              A single recovered booking often covers the entire monthly cost.
+              Most clients see positive ROI within their first two weeks.
+            </p>
+          </div>
+          <div class="result-card">
+            <div class="result-metric">10+</div>
+            <h3>Hours Saved Weekly</h3>
+            <p>
+              Eliminate the back-and-forth of scheduling, qualification, and
+              follow-up. Your team focuses on delivering great service — not
+              answering repetitive questions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Privacy Policy</h2>
-    <p>
-      Stay Bookt collects contact information including name and phone number
-      solely to facilitate communication between our client businesses and their
-      customers. This information is used only to respond to service inquiries
-      and coordinate appointments. We do not sell, share, or distribute personal
-      information to third parties.
-    </p>
-    <p>
-      For questions about your data, contact us at
-      <a href="mailto:info@staybookt.com">info@staybookt.com</a>
-    </p>
+    <!-- WHO WE SERVE -->
+    <section class="section niches-section" id="who-we-serve">
+      <div class="section-inner">
+        <div class="eyebrow">Who we serve</div>
+        <h2 class="section-title">
+          Built for <em>High-Touch</em><br />Service Businesses
+        </h2>
+        <p class="section-sub">
+          We specialize in businesses where every client relationship matters
+          and every missed booking has a real cost.
+        </p>
+        <div class="niches-grid">
+          <div class="niche-card">
+            <span class="niche-icon">✦</span>
+            <h3>Med Spas & Aesthetics</h3>
+            <p>
+              High-value appointments, no-shows that cost hundreds, and clients
+              who expect a premium experience from the first message.
+            </p>
+            <div class="niche-pain">Avg. missed booking value: $400–$1,200</div>
+          </div>
+          <div class="niche-card">
+            <span class="niche-icon">✦</span>
+            <h3>Boutique Fitness Studios</h3>
+            <p>
+              Class bookings, membership inquiries, and new client conversions
+              handled automatically — even at 11pm when someone finally decides
+              to start.
+            </p>
+            <div class="niche-pain">Avg. membership LTV: $1,800–$3,600</div>
+          </div>
+          <div class="niche-card">
+            <span class="niche-icon">✦</span>
+            <h3>Longevity & TRT Clinics</h3>
+            <p>
+              Complex inquiries that need smart qualification. Your agent
+              handles the education, books the consult, and notifies your team
+              when a serious prospect is ready.
+            </p>
+            <div class="niche-pain">Avg. client LTV: $5,000–$20,000</div>
+          </div>
+          <div class="niche-card">
+            <span class="niche-icon">✦</span>
+            <h3>Cosmetic Dentistry</h3>
+            <p>
+              New patient inquiries, treatment questions, and appointment
+              scheduling handled 24/7 — no front desk overtime required.
+            </p>
+            <div class="niche-pain">Avg. case value: $2,000–$8,000</div>
+          </div>
+          <div class="niche-card">
+            <span class="niche-icon">✦</span>
+            <h3>Wellness & Spa Resorts</h3>
+            <p>
+              Package inquiries, availability checks, and booking confirmations
+              — handled with the same white-glove experience your brand
+              promises.
+            </p>
+            <div class="niche-pain">Avg. booking value: $500–$3,000</div>
+          </div>
+          <div class="niche-card">
+            <span class="niche-icon">✦</span>
+            <h3>Hormone & IV Therapy</h3>
+            <p>
+              Sensitive inquiries handled with discretion and intelligence. Your
+              agent qualifies interest, answers common questions, and books the
+              intake appointment.
+            </p>
+            <div class="niche-pain">Avg. program value: $3,000–$12,000</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <h2>Terms of Service</h2>
-    <p>
-      Stay Bookt operates AI-assisted communication services on behalf of small
-      business clients. SMS and chat communications are initiated by end users
-      seeking services from those businesses. Users may opt out of SMS
-      communications at any time by replying STOP. Stay Bookt acts as a
-      technology service provider and is not directly responsible for the
-      products or services offered by its clients.
-    </p>
+    <!-- PRICING -->
+    <section class="section pricing-section" id="pricing">
+      <div class="section-inner">
+        <div class="eyebrow">Simple pricing</div>
+        <h2 class="section-title">
+          One Flat Rate.<br /><em>No Surprises.</em>
+        </h2>
+        <p class="section-sub">
+          Month-to-month, no setup fees, no long-term contracts. Cancel anytime
+          with 30 days notice.
+        </p>
+        <div class="pricing-grid">
+          <div class="price-card">
+            <div class="price-name">Starter</div>
+            <div class="price-target">
+              Solo operators & single-location practices
+            </div>
+            <div class="price-amount"><sup>$</sup>397</div>
+            <div class="price-period">per month</div>
+            <div class="price-divider"></div>
+            <ul class="price-features">
+              <li>Web chat agent on your site</li>
+              <li>Lead capture & qualification</li>
+              <li>Calendar booking automation</li>
+              <li>Appointment confirmations</li>
+              <li>Monthly performance report</li>
+            </ul>
+          </div>
+          <div class="price-card featured">
+            <div class="price-name">Growth</div>
+            <div class="price-target">Med spas, clinics & wellness studios</div>
+            <div class="price-amount"><sup>$</sup>697</div>
+            <div class="price-period">per month</div>
+            <div class="price-divider"></div>
+            <ul class="price-features">
+              <li>Everything in Starter</li>
+              <li>Dedicated SMS number</li>
+              <li>No-show follow-up sequences</li>
+              <li>Review request automation</li>
+              <li>Weekly performance report</li>
+            </ul>
+          </div>
+          <div class="price-card">
+            <div class="price-name">Pro + Sales</div>
+            <div class="price-target">
+              Established practices ready to grow pipeline
+            </div>
+            <div class="price-amount"><sup>$</sup>1,297</div>
+            <div class="price-period">per month</div>
+            <div class="price-divider"></div>
+            <ul class="price-features">
+              <li>Everything in Growth</li>
+              <li>Outbound sales sequences</li>
+              <li>Hot lead alerts</li>
+              <li>CRM sync</li>
+              <li>Weekly strategy review</li>
+            </ul>
+          </div>
+        </div>
+        <p class="pricing-note">
+          Multi-location pricing available.
+          <a href="#book-demo">Book a demo</a> to discuss your specific needs.
+        </p>
+      </div>
+    </section>
 
-    <h2>About</h2>
-    <p>
-      Stay Bookt is a technology services company based in Texas. We build and
-      manage AI front desk agents that help small business owners stop missing
-      leads and start filling their calendars — without hiring additional staff.
-    </p>
+    <!-- CONTACT FORM -->
+    <section class="contact-section" id="contact">
+      <div class="contact-inner">
+        <div class="contact-left">
+          <div class="eyebrow">Get in touch</div>
+          <h2 class="section-title">
+            Have Questions?<br /><em>We Have Answers.</em>
+          </h2>
+          <p class="section-sub">
+            Not ready to book a call yet? Send us a message and we'll get back
+            to you within one business day.
+          </p>
+          <div class="contact-features">
+            <div class="contact-feature">
+              <div class="contact-feature-icon">◈</div>
+              <div class="contact-feature-text">
+                <h4>Live demo included</h4>
+                <p>
+                  Every discovery call includes a live demo tailored to your
+                  business type.
+                </p>
+              </div>
+            </div>
+            <div class="contact-feature">
+              <div class="contact-feature-icon">◈</div>
+              <div class="contact-feature-text">
+                <h4>No pressure, ever</h4>
+                <p>
+                  We show you what's possible and let the results speak for
+                  themselves.
+                </p>
+              </div>
+            </div>
+            <div class="contact-feature">
+              <div class="contact-feature-icon">◈</div>
+              <div class="contact-feature-text">
+                <h4>Live within 5 days</h4>
+                <p>
+                  From signed agreement to live agent — typically 3 to 5
+                  business days.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ghl-form-wrap">
+          <iframe
+            src="https://api.leadconnectorhq.com/widget/form/ceHVpZevOIZwTpbxvIP2"
+            style="width: 100%; height: 971px; border: none"
+            id="inline-ceHVpZevOIZwTpbxvIP2"
+            data-layout="{'id':'INLINE'}"
+            data-trigger-type="alwaysShow"
+            data-trigger-value=""
+            data-activation-type="alwaysActivated"
+            data-activation-value=""
+            data-deactivation-type="neverDeactivate"
+            data-deactivation-value=""
+            data-form-name="Stay Bookt - Contact Form"
+            data-height="971"
+            data-layout-iframe-id="inline-ceHVpZevOIZwTpbxvIP2"
+            data-form-id="ceHVpZevOIZwTpbxvIP2"
+            title="Stay Bookt - Contact Form"
+          >
+          </iframe>
+          <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKING -->
+    <section class="booking-section" id="book-demo">
+      <div class="booking-inner">
+        <div class="eyebrow" style="justify-content: center">
+          <span
+            style="
+              width: 24px;
+              height: 1px;
+              background: var(--gold-dark);
+              display: inline-block;
+            "
+          ></span>
+          Book a demo
+        </div>
+        <h2 class="section-title">See It Live.<br /><em>In 30 Minutes.</em></h2>
+        <p class="section-sub">
+          Pick a time that works for you. We'll show you a live demo built for
+          your specific business type — no generic slides, no fluff.
+        </p>
+        <div class="booking-widget">
+          <iframe
+            src="https://api.leadconnectorhq.com/widget/bookings/stay-bookt-meeting-calendar"
+            style="width: 100%; height: 700px; border: none"
+            title="Book a Stay Bookt Demo Call"
+          >
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div>
+            <div class="footer-logo">
+              <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                <rect
+                  x="2"
+                  y="4"
+                  width="28"
+                  height="26"
+                  rx="3"
+                  stroke="#C9A96E"
+                  stroke-width="1.5"
+                />
+                <line
+                  x1="2"
+                  y1="12"
+                  x2="30"
+                  y2="12"
+                  stroke="#C9A96E"
+                  stroke-width="1.5"
+                />
+                <rect x="7" y="17" width="5" height="5" rx="1" fill="#C9A96E" />
+                <rect
+                  x="14"
+                  y="17"
+                  width="5"
+                  height="5"
+                  rx="1"
+                  fill="#C9A96E"
+                />
+                <rect
+                  x="21"
+                  y="17"
+                  width="5"
+                  height="5"
+                  rx="1"
+                  fill="#C9A96E"
+                  opacity="0.4"
+                />
+                <line
+                  x1="10"
+                  y1="4"
+                  x2="10"
+                  y2="1"
+                  stroke="#C9A96E"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <line
+                  x1="22"
+                  y1="4"
+                  x2="22"
+                  y2="1"
+                  stroke="#C9A96E"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <span class="footer-logo-text">Stay <em>Bookt</em></span>
+            </div>
+            <p class="footer-desc">
+              Done-for-you booking automation for high-touch service businesses.
+              We fill your calendar so you can focus on delivering exceptional
+              service.
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="#how-it-works">How It Works</a></li>
+              <li><a href="#who-we-serve">Who We Serve</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#book-demo">Book a Demo</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <ul>
+              <li>
+                <a href="mailto:hello@staybookt.com">hello@staybookt.com</a>
+              </li>
+              <li><a href="#book-demo">Book a Call</a></li>
+              <li><a href="#contact">Send a Message</a></li>
+              <li><a href="#">Austin, TX</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2025 Stay Bookt. All rights reserved.</span>
+          <div class="footer-legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 40);
+      });
+      const toggle = document.getElementById("navToggle");
+      const links = document.getElementById("navLinks");
+      toggle.addEventListener("click", () => links.classList.toggle("open"));
+      links
+        .querySelectorAll("a")
+        .forEach((a) =>
+          a.addEventListener("click", () => links.classList.remove("open")),
+        );
+    </script>
   </body>
 </html>
